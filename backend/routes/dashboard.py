@@ -3,10 +3,9 @@ from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 
 from auth import decode_token
-from db import get_all_users
+from db import get_all_users, delete_user_by_email
 from dependencies import require_admin
 
-from backend.db import delete_user_by_email
 
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")
