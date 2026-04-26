@@ -1903,9 +1903,11 @@ function pickRole(el) {
   document.querySelectorAll('.f-radio').forEach(r => r.classList.remove('on'));
   el.classList.add('on');
 }
-function submitForm() {
+async function submitForm() {
   const name  = document.getElementById('f-name').value.trim();
   const email = document.getElementById('f-email').value.trim();
+  const role  = document.querySelector('input[name="role"]:checked')?.value || 'curious';
+
   if (!name || !email) {
     ['f-name','f-email'].forEach(id => {
       const el = document.getElementById(id);
@@ -1917,6 +1919,18 @@ function submitForm() {
     });
     return;
   }
+
+  const formData = new FormData();
+  formData.append('name', name);
+  formData.append('email', email);
+  formData.append('role', role);
+
+  try {
+    await fetch('/register', { method: 'POST', body: formData });
+  } catch(e) {
+    console.error(e);
+  }
+
   document.getElementById('form-body').style.display = 'none';
   document.getElementById('f-success').style.display = 'block';
 }
