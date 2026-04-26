@@ -6,6 +6,8 @@ from auth import decode_token
 from db import get_all_users
 from dependencies import require_admin
 
+from backend.db import delete_user_by_email
+
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")
 
@@ -34,3 +36,8 @@ async def admin_users(user: dict = Depends(require_admin)):
         {k: v for k, v in u.items() if k != "password_hash"}
         for u in users
     ]
+
+@router.delete("/admin/users/{email}")
+async def delete_user(email: str, user: dict = Depends(require_admin)):
+    delete_user_by_email(email)
+    return {"ok": True}

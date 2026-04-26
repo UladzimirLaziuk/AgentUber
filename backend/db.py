@@ -30,3 +30,7 @@ def get_all_users() -> list[dict]:
             "MATCH (u:User) RETURN u ORDER BY u.created_at DESC"
         )
         return [dict(r["u"]) for r in result]
+
+def delete_user_by_email(email: str) -> None:
+    with get_driver().session() as session:
+        session.run("MATCH (u:User {email: $email}) DELETE u", email=email)
