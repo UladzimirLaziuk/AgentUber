@@ -212,31 +212,32 @@
   </main>
 
   {% if user.role == 'admin' %}
-  <script>
-    fetch('/admin/users')
-      .then(r => r.json())
-      .then(users => {
-        const tbody = document.getElementById('users-tbody');
-        if (!users.length) {
-          tbody.innerHTML = '<tr><td colspan="4" style="color:#555;padding:1rem;">No users yet</td></tr>';
-          return;
-        }
-        tbody.innerHTML = users.map(u => {
-          const roleClass = ['admin','driver','client','dev'].includes(u.role) ? u.role : 'other';
-          const date = (u.created_at || '').slice(0, 19).replace('T', ' ');
-          return `<tr>
-            <td>${u.name || '—'}</td>
-            <td class="email-cell">${u.email || '—'}</td>
-            <td><span class="user-role ${roleClass}">${u.role || '—'}</span></td>
-            <td class="date-cell">${date || '—'}</td>
-          </tr>`;
-        }).join('');
-      })
-      .catch(() => {
-        document.getElementById('users-tbody').innerHTML =
-          '<tr><td colspan="4" style="color:#f87171;">Failed to load users</td></tr>';
-      });
-  </script>
-  {% endif %}
+<script>
+  fetch('/admin/users')
+    .then(r => r.json())
+    .then(users => {
+      const tbody = document.getElementById('users-tbody');
+      if (!users.length) {
+        tbody.innerHTML = '<tr><td colspan="5" style="color:#555;padding:1rem;">No users yet</td></tr>';
+        return;
+      }
+      tbody.innerHTML = users.map(u => {
+        const roleClass = ['admin','driver','client','dev'].includes(u.role) ? u.role : 'other';
+        const date = (u.created_at || '').slice(0, 19).replace('T', ' ');
+        return `<tr>
+          <td>${u.name || '—'}</td>
+          <td class="email-cell">${u.email || '—'}</td>
+          <td><span class="user-role ${roleClass}">${u.role || '—'}</span></td>
+          <td class="date-cell">${date || '—'}</td>
+          <td style="color:#555;font-size:0.82rem;">${u.note || '—'}</td>
+        </tr>`;
+      }).join('');
+    })
+    .catch(() => {
+      document.getElementById('users-tbody').innerHTML =
+        '<tr><td colspan="5" style="color:#f87171;">Failed to load users</td></tr>';
+    });
+</script>
+{% endif %}
 </body>
 </html>
