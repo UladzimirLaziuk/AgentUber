@@ -8,6 +8,7 @@ celery = Celery(
     backend=os.environ.get("REDIS_URL", "redis://redis:6379/0"),
 )
 
+
 @celery.task
-def register_user(name: str, email: str, role: str) -> None:
-    save_user(name, email, role)
+def register_user(name: str, email: str, role: str, note: str = "") -> None:
+    save_user(name, email, role, note)

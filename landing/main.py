@@ -18,8 +18,9 @@ async def register(
     name: str = Form(...),
     email: str = Form(...),
     role: str = Form(...),
+    note: str = Form(default=""),
 ):
-    register_user.delay(name, email, role)
+    register_user.delay(name, email, role, note)
     return RedirectResponse(url="/demo", status_code=303)
 
 

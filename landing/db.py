@@ -15,12 +15,10 @@ def get_driver():
     return _driver
 
 
-def save_user(name: str, email: str, role: str) -> None:
+def save_user(name: str, email: str, role: str, note: str = "") -> None:
     with get_driver().session() as session:
         session.run(
-            "CREATE (u:User {name: $name, email: $email, role: $role, created_at: $ts})",
-            name=name,
-            email=email,
-            role=role,
+            "CREATE (u:User {name: $name, email: $email, role: $role, note: $note, created_at: $ts})",
+            name=name, email=email, role=role, note=note,
             ts=datetime.now(timezone.utc).isoformat(),
         )
