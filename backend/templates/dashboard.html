@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AgentUber — Dashboard</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #0f0f0f;
+      color: #f0f0f0;
+      min-height: 100vh;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      border-bottom: 1px solid #1e1e1e;
+      background: #111;
+    }
+
+    .logo {
+      font-size: 1.2rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, #7c3aed, #2563eb);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.9rem;
+      color: #888;
+    }
+
+    .role-badge {
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      background: #1e1e1e;
+      border: 1px solid #333;
+      color: #7c3aed;
+    }
+
+    .role-badge.admin { color: #f59e0b; border-color: #78350f; background: #1c1208; }
+
+    form.logout button {
+      padding: 0.4rem 0.875rem;
+      border-radius: 6px;
+      border: 1px solid #333;
+      background: transparent;
+      color: #888;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    form.logout button:hover { color: #f0f0f0; border-color: #555; }
+
+    main {
+      max-width: 900px;
+      margin: 3rem auto;
+      padding: 0 2rem;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle { color: #666; margin-bottom: 2.5rem; }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-bottom: 3rem;
+    }
+
+    .stat-card {
+      padding: 1.5rem;
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 10px;
+    }
+
+    .stat-card .label { font-size: 0.8rem; color: #666; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.5rem; }
+    .stat-card .value { font-size: 1.8rem; font-weight: 700; }
+
+    .admin-section {
+      border-top: 1px solid #1e1e1e;
+      padding-top: 2rem;
+    }
+
+    .admin-section h2 { font-size: 1.1rem; margin-bottom: 1rem; color: #f59e0b; }
+
+    .admin-note {
+      padding: 1rem 1.25rem;
+      background: #1c1208;
+      border: 1px solid #78350f;
+      border-radius: 8px;
+      color: #d97706;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">AgentUber</div>
+    <div class="user-info">
+      <span>{{ user.sub }}</span>
+      <span class="role-badge {% if user.role == 'admin' %}admin{% endif %}">{{ user.role }}</span>
+      <form class="logout" method="post" action="/logout">
+        <button type="submit">Sign out</button>
+      </form>
+    </div>
+  </header>
+
+  <main>
+    <h1>Dashboard</h1>
+    <p class="subtitle">Welcome back, {{ user.sub }}.</p>
+
+    <div class="cards">
+      <div class="stat-card">
+        <div class="label">Role</div>
+        <div class="value">{{ user.role | capitalize }}</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Status</div>
+        <div class="value" style="color:#22c55e">Active</div>
+      </div>
+    </div>
+
+    {% if user.role == 'admin' %}
+    <div class="admin-section">
+      <h2>Admin Panel</h2>
+      <div class="admin-note">
+        Full user list is available via <code>GET /admin/users</code> (JSON).
+      </div>
+    </div>
+    {% endif %}
+  </main>
+</body>
+</html>

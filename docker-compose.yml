@@ -34,6 +34,19 @@ services:
       - internal
     restart: unless-stopped
 
+  backend:
+    build:
+      context: ./backend
+    command: uvicorn main:app --host 0.0.0.0 --port ${BACKEND_PORT:-8001}
+    env_file: .env
+    ports:
+      - "${BACKEND_PORT:-8001}:${BACKEND_PORT:-8001}"
+    depends_on:
+      - neo4j
+    networks:
+      - internal
+    restart: unless-stopped
+
   redis:
     image: redis:alpine
     volumes:
